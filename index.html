@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        main,
+        .message {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background-color: #E6B9A6;
+            height: 86vh;
+            width: 500px;
+            margin: auto;
+            padding: 20px 50px;
+            border-radius: 10px;
+        }
+
+        .message {
+            position: absolute;
+            height: 83vh;
+            background-color: #e48f79;
+            width: 400px;
+            text-align: center;
+        }
+
+        body {
+            background-color: #EEEDEB;
+        }
+
+        main h2 {
+            font-size: 3.5rem;
+        }
+
+        .winner {
+            height: 70vh;
+            width: 600px;
+        }
+
+        .boxes {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            height: 28rem;
+            width: 22rem;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .boxes button {
+            height: 30%;
+            width: 30%;
+            font-size: 5rem;
+            background-color: #939185;
+            border: none;
+            box-shadow: 10px 7px 5px gray;
+            color: black;
+        }
+
+        .restart,
+        .playb {
+            margin-top: 20px;
+            border: none;
+            padding: 25px;
+            font-size: 3rem;
+            border-radius: 10px;
+            background-color: #2F3645;
+            color: whitesmoke;
+            box-shadow: 10px 7px 5px black;
+        }
+
+        .hide {
+            display: none;
+        }
+        .btn{
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 13px;
+}
+    </style>
+</head>
+
+<body>
+    <main>
+
+        <div class="message hide">
+            <h2 class="winnername">winner name</h2>
+            <button class="playb playagain">play again</button>
+        </div>
+        <h2>tic tac game</h2> <!-- Corrected spelling mistake -->
+        <div class="boxes">
+            <button class="btn"></button>
+            <button class="btn"></button>
+            <button class="btn"></button>
+            <button class="btn"></button>
+            <button class="btn"></button>
+            <button class="btn"></button>
+            <button class="btn"></button>
+            <button class="btn"></button>
+            <button class="btn"></button>
+        </div>
+
+        <button class="restart">restart</button>
+    </main>
+    <script>
+        let isTurnX = true; // Renamed variable for clarity
+        let buttons = document.querySelectorAll(".btn"); // Renamed variable for clarity
+        let messages = document.querySelectorAll(".message"); // Renamed variable for clarity
+        let winnerName = document.querySelector(".winnername"); // Renamed variable for clarity
+        let restartButton = document.querySelector(".restart"); // Renamed variable for clarity
+        let playAgainButton = document.querySelector(".playagain"); // Renamed variable for clarity
+        let moveCount = 0; // Renamed variable for clarity
+    
+        let winningCombinations = [
+            [0, 1, 2], [0, 3, 6], [0, 4, 8], [1, 4, 7], [2, 5, 8], [2, 4, 6], [3, 4, 5], [6, 7, 8]
+        ];
+    
+        buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+                if (isTurnX) {
+                    button.innerText = "X";
+                    isTurnX = false;
+                } else {
+                    button.innerText = "O";
+                    isTurnX = true;
+                }
+                button.disabled = true;
+                moveCount++;
+                checkWinner();
+                if (winnerName.innerText == "winnername" && moveCount == 9) {
+                    declareDraw();
+                }
+            });
+        });
+    
+        let checkWinner = () => {
+            for (let combination of winningCombinations) {
+                if (buttons[combination[0]].innerText == "O" && buttons[combination[1]].innerText == "O" && buttons[combination[2]].innerText == "O") {
+                    console.log("O wins");
+                    winnerName.innerText = "Congratulations 'O' Is Winner";
+                    messages.forEach(msg => msg.classList.remove("hide"));
+                }
+                if (buttons[combination[0]].innerText == "X" && buttons[combination[1]].innerText == "X" && buttons[combination[2]].innerText == "X") {
+                    console.log("X wins");
+                    winnerName.innerText = "Congratulations 'X' Is Winner";
+                    messages.forEach(msg => msg.classList.remove("hide"));
+                }
+            }
+        };
+    
+        let declareDraw = () => {
+            console.log("Draw");
+            winnerName.innerText = "DRAW";
+            messages.forEach(msg => msg.classList.remove("hide"));
+            moveCount = 0;
+        };
+    
+        restartButton.addEventListener("click", function () {
+            buttons.forEach((button) => {
+                button.innerText = "";
+                button.disabled = false;
+                moveCount = 0;
+            });
+        });
+    
+        playAgainButton.addEventListener("click", function () {
+            buttons.forEach((button) => {
+                button.innerText = "";
+                button.disabled = false;
+                moveCount = 0;
+                winnerName.innerText = "winnername";
+                messages.forEach(msg => msg.classList.add("hide"));
+            });
+        });
+    </script>
+    </body>
+    </html>
+    
+</body>
+
+</html>
